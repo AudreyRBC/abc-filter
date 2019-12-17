@@ -1,0 +1,21 @@
+# Miscellaneous
+.DS_Store
+Thumbs.db
+.idea/
+
+# Theme
+
+
+node_modules/
+vendor/
+test/
+
+# Webpack
+package-lock.json
+package.json
+.babelrc
+dev.config.js
+prod.config.js
+postcss.config.js
+
+*.map
