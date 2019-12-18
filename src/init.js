@@ -1,10 +1,9 @@
-import {Filter} from './Core/Filter'
-import {Datas} from './Core/Datas'
+var ABC = module.exports = {};
+ABC.filter = function(params){
+    var Filter = require('./Core/Filter')
+    var Datas = require('./Core/Datas')
 
-var abcFilter = module.exports = {};
-abcFilter.filter = function(params) {
-
-    if(!document.querySelector(params.form.container) ) {
+    if(!params.form || !document.querySelector(params.form.container) ) {
         console.error('No container form found');
         return;
     }
@@ -16,8 +15,9 @@ abcFilter.filter = function(params) {
 
     const datas = new Datas();
     datas.get( abc ) ;
+}
 
-};
-abcFilter.testing = function() {
-  console.log("It's running")
+
+ABC.test = function(){
+    console.log("ABC is running")
 }
