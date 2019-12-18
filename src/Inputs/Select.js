@@ -1,6 +1,7 @@
-import {inArray} from '../Helpers/Array'
+var { inArray }  = require ('../Helpers/Array' );
 
-export default function Select(){
+module.exports = () => { return new Select() }
+function Select(){
     this.name    = false
     this.compare = false
     this.url_name= false

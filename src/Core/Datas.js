@@ -1,17 +1,19 @@
-import {Fetch} from '../Helpers/Fetch'
+var {Fetch} = require( '../Helpers/Fetch' )
 
-import {onChange} from '../Actions/Change'
-import {onClick} from '../Actions/Click'
-import {onRedirect} from '../Actions/Redirect'
+var onChange = require ( '../Actions/Change' )
+var onClick = require ( '../Actions/Click' )
+var onRedirect = require ( '../Actions/Redirect' )
 
-import {Url} from '../Core/Url'
+var Url = require ( '../Core/Url' );
+module.exports = () => { return new Datas() }
 
-export function Datas(){};
+function Datas(){};
 
 Datas.prototype.get = function( el ){
   return Fetch(el.options.url, (error, success) => {
       if(error) console.log(error);
       else {
+
         el.datas = success;
         el.datas = el.datas.filter( d => {
           d.hide = false;
@@ -25,7 +27,8 @@ Datas.prototype.get = function( el ){
         let action;
         switch (el.form.action) {
           case 'change':
-            action = new onChange(el);
+          console.log(el);
+            action = new onChange( el );
             break;
           case 'submit':
             action = new onClick(el);
@@ -33,7 +36,6 @@ Datas.prototype.get = function( el ){
           case 'redirect':
             action = new onRedirect(el);
             break;
-
         }
 
       }

@@ -1,1 +1,2 @@
-export function onRedirect(){};
+module.exports = () => { return new onRedirect() }
+function onRedirect(){};

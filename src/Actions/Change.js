@@ -1,14 +1,12 @@
-import Checkbox from '../Inputs/Checkbox'
-import Radio from '../Inputs/Radio'
-import Select from '../Inputs/Select'
-import Search from '../Inputs/Search'
+var Checkbox = require( '../Inputs/Checkbox' );
+var Radio = require( '../Inputs/Radio' );
+var Select = require( '../Inputs/Select' );
+var Search = require( '../Inputs/Search' );
 
-import {closest, error, isTarget, isTargetSelected} from '../Helpers/Utils'
+var { closest, error, isTarget, isTargetSelected }  = require ('../Helpers/Utils');
 
-import {Datas} from '../Core/Datas'
-
-export function onChange(el){
-
+module.exports = ( el ) => { return new onChange( el ) }
+function onChange(el){
   this.el = el
   this.bindEvent();
 
@@ -16,6 +14,7 @@ export function onChange(el){
 
 
 onChange.prototype.bindEvent = function(){
+
   const events = ['click', 'change', 'keyup']
   events.forEach( event => {
     this.el.formObj.addEventListener(event, e => {
@@ -109,12 +108,13 @@ onChange.prototype.filter = function(){
 
     if (!data.hide) data.hide = compare.length === result.length  ? false : true;
 
-    data.hide ? data.abc_selector.classList.add( "abc-hide" ) : data.abc_selector.classList.add( "abc-show" )
+    data.hide ? data.abc_selector.classList.add( "abc-hide" ) : data.abc_selector.classList.remove( "abc-hide" )
+    data.hide ? data.abc_selector.classList.remove( "abc-show" ) : data.abc_selector.classList.add( "abc-show" )
     // data.abc_selector.style.display = data.hide ?  "none" : "block"
     if(!data.hide) return data
   });
 
-  if(this.el.nb_results) this.results(nbs.length);
+  if(this.el.nb_results && this.el.nb_results.target) this.results(nbs.length);
 }
 
 onChange.prototype.filterByKey = function(value) {
@@ -127,7 +127,10 @@ onChange.prototype.filterByKey = function(value) {
 onChange.prototype.results = function(nb){
   let result = this.el.nb_results, setText = "plural";
   const target = document.querySelector(this.el.nb_results.target);
-  if(!target) error( ' No Result target found ')
+  if(!target) {
+     error( ' No Result target found ')
+     return;
+ }
 
   if (nb === 0) setText = "no_results"
   else if (nb === 1) setText = "singular"

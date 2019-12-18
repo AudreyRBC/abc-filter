@@ -1,12 +1,12 @@
-import Fuse from 'fuse.js'
+var Fuse = require ('fuse.js' );
+module.exports = () => { return new Search() }
 
-export default function Search(){
+function Search(){
     this.name    = false;
     this.compare = false;
     this.url_name= false;
     this.value   = "";
 }
-
 
 Search.prototype.validate = function(datas){
 

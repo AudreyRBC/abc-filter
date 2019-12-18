@@ -1,6 +1,6 @@
-import {inArray} from '../Helpers/Array'
-
-export default function Radio(){
+var { inArray }  = require ('../Helpers/Array' );
+module.exports = () => { return new Radio() }
+function Radio(){
   this.name    = false
   this.compare = false
   this.url_name= false

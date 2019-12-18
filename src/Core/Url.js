@@ -1,9 +1,10 @@
-import Checkbox from '../Inputs/Checkbox'
-import Radio from '../Inputs/Radio'
-import Select from '../Inputs/Select'
-import Search from '../Inputs/Search'
+var Checkbox = require( '../Inputs/Checkbox' );
+var Radio = require( '../Inputs/Radio' );
+var Select = require( '../Inputs/Select' );
+var Search = require( '../Inputs/Search' );
 
-export default function Url(){
+module.exports = () => { return new Url() }
+function Url(){
   this.search = new URLSearchParams();
   if(location.hash) this.params = this.disconstruct()
 };

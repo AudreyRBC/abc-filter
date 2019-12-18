@@ -1,15 +1,18 @@
-import {setArray} from '../Helpers/Array'
-import {capitalize} from '../Helpers/String'
+var { setArray }  = require ('../Helpers/Array' );
 
-import {Range} from '../Inputs/Range';
-import Radio from '../Inputs/Radio';
-import Select from '../Inputs/Select';
-import Search from '../Inputs/Search';
-import Checkbox from '../Inputs/Checkbox';
+// import {Range} from '../Inputs/Range';
+var Checkbox = require( '../Inputs/Checkbox' );
+var Radio = require( '../Inputs/Radio' );
+var Select = require( '../Inputs/Select' );
+var Search = require( '../Inputs/Search' );
 
-import Url from '../Core/Url'
+var Url = require ( '../Core/Url' );
 
-export function Filter(params){
+
+module.exports = ( params ) => { return new Filter( params ) }
+
+function Filter(params){
+
     this.options = {
       url : params.url ? params.url : false,
       create_url : params.create_url ? params.create_url : false,
@@ -49,8 +52,6 @@ Filter.prototype.construct = function(params){
     if (params.results) this.results = setArray(this.results, params.results);
     if (params.nb_results) this.nb_results = setArray(this.nb_results, params.nb_results);
     if (params.form) this.form = setArray(this.form, params.form);
-
-
 
     return this;
 

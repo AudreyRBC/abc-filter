@@ -1,6 +1,6 @@
-import {inArray} from '../Helpers/Array'
-
-export default function Checkbox(d){
+var { inArray }  = require ('../Helpers/Array' );
+module.exports = () => { return new Checkbox() }
+function Checkbox(d){
     this.name       = false
     this.compare    = false
     this.url_name   = false
