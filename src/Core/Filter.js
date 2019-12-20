@@ -19,7 +19,7 @@ function Filter(params){
     };
 
     this.url = params.create_url ? new Url() : false;
-
+    this.debug = params.debug ? params.debug : false;
     this.results = {
       target:           false,
       action:           false,
@@ -77,12 +77,13 @@ Filter.prototype.get = function(array, val, fct ) {
 
     array.forEach( (el, index)=> {
         let obj = new fct();
+
         if(!document.querySelector(`[name="${el.name}"]`)){
             delete array[index];
             return
         }
         const els = el.url_name ? el.url_name : el.name;
-        if(this.url && location.hash && this.url.params[els] ) el.value = this.url.params[els];
+        if(this.url && location.hash && this.url.params[els] ) el.value = el.id === true ? this.url.params[els].map( input => document.querySelector(`#${input}`).value ) : this.url.params[els];
 
         this.inputs[val].push( setArray( obj, el ) )
 

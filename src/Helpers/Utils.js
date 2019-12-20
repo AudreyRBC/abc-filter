@@ -3,16 +3,17 @@ export const error = (msg) => {
   return;
 };
 
-export const isTarget = (e, label) => {
-  return closest(e.target, label.name, label.name) || e.target.getAttribute('name') === label.name;
+export const isTarget = (e, el) => {
+  el.target = e.target.hasAttribute('id') ? e.target.getAttribute('id') : e.target.value
+  return closest(e.target, el.name, el.name) || e.target.getAttribute('name') === el.name;
 }
-export const isTargetSelected = (e, label, form) => {
+export const isTargetSelected = (e, el, form) => {
 	const attr = e.target.getAttribute('rel')
-
 	if (attr === "" || attr === null || attr === "default" || attr === "all") return true;
-	const target = attr ? form.querySelector(`[name="${label.name}"] [value="${attr}"]`)
+	const target = attr ? form.querySelector(`[name="${el.name}"] [value="${attr}"]`)
 											: e.target
-	return closest(target, "select", "select") || target.getAttribute('name') === label.name;
+	if (!target) return;
+	return closest(target, "select", "select") || target.getAttribute('name') === el.name;
 }
 
 export const closest = (el, selector, stopSelector) => {

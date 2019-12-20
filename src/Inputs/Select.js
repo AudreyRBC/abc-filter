@@ -7,7 +7,9 @@ function Select(){
     this.url_name= false
     this.multiple= false
     this.operator= "or"
-    this.value      = []
+    this.relation= "and"
+    this.value   = []
+    this.id      = true
 }
 
 
@@ -18,6 +20,7 @@ Select.prototype.validate = function(data){
 
     let isValidated = inArray(data, this.compare, this.value);
 
+    isValidated = typeof isValidated != 'object' ? [isValidated] : isValidated
     if( isValidated ) {
 
         isValidated = isValidated.filter( v => this.value.indexOf( String(v) ) > -1);
@@ -37,9 +40,10 @@ Select.prototype.update = function(options){
     // Return the checked inputs
 
     const checked = [...inputs].filter( input => input.selected );
+
     // Insert value in instance
     this.value = [...checked].map( input => input.value )
-    this.names = [...checked].map( input => input.getAttribute('id') ? input.getAttribute('id') : input.value );
+    this.names = [...checked].map( input => input.hasAttribute('id') ? input.getAttribute('id') : input.value );
 }
 
 Select.prototype.create = function(options){

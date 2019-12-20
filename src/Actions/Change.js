@@ -20,13 +20,13 @@ onChange.prototype.bindEvent = function(){
     this.el.formObj.addEventListener(event, e => {
       this.update(e);
       if(this.el.url) location.hash = this.el.url.search.toString()
-      if(!this.el.url) this.filter( )
+      this.filter( )
     })
   })
   if (this.el.url){
     this.filter()
-    window.addEventListener("hashchange", () => {
-       this.filter()} )
+    // window.addEventListener("hashchange", () => {
+    //    this.filter()} )
   }
 
 }
@@ -95,7 +95,7 @@ onChange.prototype.filter = function(){
   let inputs = this.filterByKey("search" );
   let datas  = this.el.datas
 
-  this.el.inputs.search.forEach( s => { datas = s.validate(  this.el.datas ) } );
+  if( this.el.inputs.search ) this.el.inputs.search.forEach( s => { datas = s.validate(  this.el.datas ) } );
 
   let nbs = this.el.datas.filter( data => {
     let compare = [];
@@ -103,6 +103,8 @@ onChange.prototype.filter = function(){
       compare = [...compare, ...this.get(inputs[key], data)];
 
     }
+
+
     let result = compare.filter( t => t );
     data.hide = datas && datas.indexOf(data) === -1 ? true : false;
 

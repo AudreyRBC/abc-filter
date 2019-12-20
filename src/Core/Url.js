@@ -11,7 +11,7 @@ function Url(){
 
 Url.prototype.construct = function(label){
   let name = label.url_name ? label.url_name : label.name
-  const value = label.names ? label.names : label.value
+  const value = label.names && label.id && label.names[0] != "" ? label.names : label.value
   if (value.length !== 0 && this.search) this.search.set(name, value);
   if (value.length === 0 && this.search || value.length === 1 && value[0] === "" && this.search) this.search.delete(name);
 }

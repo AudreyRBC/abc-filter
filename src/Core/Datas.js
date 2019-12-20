@@ -10,6 +10,7 @@ module.exports = () => { return new Datas() }
 function Datas(){};
 
 Datas.prototype.get = function( el ){
+  console.log(el.options.url);
   return Fetch(el.options.url, (error, success) => {
       if(error) console.log(error);
       else {
@@ -22,12 +23,15 @@ Datas.prototype.get = function( el ){
         });
 
         console.info("ABC Ready")
+        if(el.debug) {
+          console.info( "url: " + el.options.url)
+          console.info( el.datas.length + " datas founds")
+        }
         // if(el.options.create_url === true) el.options.url_settings = new Url();
 
         let action;
         switch (el.form.action) {
           case 'change':
-          console.log(el);
             action = new onChange( el );
             break;
           case 'submit':

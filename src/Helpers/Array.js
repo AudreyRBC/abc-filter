@@ -1,9 +1,16 @@
+
 export const setArray = function(array, options){
     for (var key in array) {
         if (typeof array[key] === "function" )
           array[key] = array[key];
-        else if (typeof array[key] !== "object" || key === "value")
-          array[key] = key in options ? options[key] : array[key];
+
+        else if (typeof array[key] !== "object" || key === "value" || key === "compare")
+        {
+            array[key] = key in options ? options[key] : array[key];
+        }
+        else if ( typeof array[key] === "object" && options[key] && options[key].length ) {
+          array[key] = options[key];
+        }
         else if ( typeof array[key] === "object" ) {
           array[key] =  key in options ? setArray(array[key], options[key] ) : array[key]
         };
