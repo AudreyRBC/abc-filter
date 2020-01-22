@@ -28,6 +28,7 @@ Search.prototype.validate = function(datas){
 Search.prototype.update = function(options){
     // Get all inputs from this name
     const input = options.el.formObj.querySelector(`[name="${this.name}"]`)
+    if (!input) return
     input.setAttribute('value', input.value)
     // Insert value in instance
     this.value = input.value
@@ -35,6 +36,7 @@ Search.prototype.update = function(options){
 }
 Search.prototype.create = function(options){
     const input = options.formObj.querySelector(`[name="${this.name}"]`)
+    if (!input) return
     input.setAttribute('value', this.value)
     // Insert value in instance
     input.value = this.value

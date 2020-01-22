@@ -14,10 +14,13 @@ function onChange(el){
 
 
 onChange.prototype.bindEvent = function(){
-
+  this.el.formObj.addEventListener("keydown", e => {
+    if (e.keyCode === 13) e.preventDefault();
+  })
   const events = ['click', 'change', 'keyup']
   events.forEach( event => {
     this.el.formObj.addEventListener(event, e => {
+      if (e.keyCode === 13) return;
       this.update(e);
       if(this.el.url) location.hash = this.el.url.search.toString()
       this.filter( )
