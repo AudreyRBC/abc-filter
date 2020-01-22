@@ -83,7 +83,19 @@ Filter.prototype.get = function(array, val, fct ) {
             return
         }
         const els = el.url_name ? el.url_name : el.name;
-        if(this.url && location.hash && this.url.params[els] ) el.value = el.id === true ? this.url.params[els].map( input => document.querySelector(`#${input}`).value ) : this.url.params[els];
+
+        if(this.url && location.hash && this.url.params[els] ){
+            if( this.url.params[els].indexOf(',') ) this.url.params[els] = this.url.params[els].split(',');
+            if (el.id === true) {
+
+                el.value = this.url.params[els].map( input => document.querySelector(`#${input}`).value )
+
+            }
+            else{
+                el.value = this.url.params[els];
+            }
+
+        }
 
         this.inputs[val].push( setArray( obj, el ) )
 

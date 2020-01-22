@@ -10,7 +10,6 @@ module.exports = () => { return new Datas() }
 function Datas(){};
 
 Datas.prototype.get = function( el ){
-  console.log(el.options.url);
   return Fetch(el.options.url, (error, success) => {
       if(error) console.log(error);
       else {

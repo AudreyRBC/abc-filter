@@ -91,10 +91,11 @@ Checkbox.prototype.update = function(options){
 }
 
 Checkbox.prototype.create = function(options){
-    const inputs = options.formObj.querySelectorAll(`[name="${this.name}"]`)
-    const checked = [...inputs].forEach( input => {
-        const attr = input.hasAttribute('id') && this.id ? input.getAttribute('id') : input.value ;
 
-        this.value.indexOf(attr) > -1 ? input.checked = true : input.checked = false;
+    const inputs = options.formObj.querySelectorAll(`[name="${this.name}"]`)
+
+    const checked = [...inputs].forEach( input => {
+        const attr = input.value ;
+        this.value.indexOf(input.value) > -1 ? input.checked = true : input.checked = false;
     });
 }

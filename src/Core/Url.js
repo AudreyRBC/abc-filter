@@ -24,7 +24,7 @@ Url.prototype.disconstruct = function() {
   hashArray.forEach( h => {
     h = h.split('=')
     params[ h[0] ] = decodeURIComponent(decodeURIComponent(h[1]));
-    this.search.set(h[0], decodeURIComponent(decodeURIComponent(h[1])))
+    this.search.set(h[0], decodeURIComponent(h[1]))
   })
   return params;
 }
