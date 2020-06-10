@@ -79,11 +79,25 @@ Checkbox.prototype.singleCompare = function( data, value, compare ){
 
 
 }
+Checkbox.prototype.customEvent = function(){
+    const newEvent = new CustomEvent(
+        'update', 
+        {detail: event}
+    )
+    document.dispatchEvent(newEvent)
+}
 
+Checkbox.prototype.set = function(options){
+    this.inputs = options.formObj.querySelectorAll(`[name="${this.name}"]`)
+
+    this.inputs.forEach(input => {
+        input.addEventListener('click', (event)  => this.customEvent() )
+    })
+    return this
+}
 Checkbox.prototype.update = function(options){
-        const inputs = options.el.formObj.querySelectorAll(`[name="${this.name}"]`)
         // Return the checked inputs
-        const checked = [...inputs].filter( input => input.checked );
+        const checked = [...this.inputs].filter( input => input.checked );
 
         // Insert value in instance
         this.value = [...checked].map( input => input.value )
@@ -95,10 +109,9 @@ Checkbox.prototype.update = function(options){
 
 Checkbox.prototype.create = function(options){
 
-    const inputs = options.formObj.querySelectorAll(`[name="${this.name}"]`)
 
-    const checked = [...inputs].forEach( input => {
-        const attr = input.getAttribute('id') && this.id ? input.getAttribute('id') : input.value ;
+    const checked = [...this.inputs].forEach( input => {
+    const attr = input.getAttribute('id') && this.id ? input.getAttribute('id') : input.value ;
 
         if(this.value.indexOf(input.value) > -1){
             input.setAttribute('checked', 'checked')
@@ -108,4 +121,17 @@ Checkbox.prototype.create = function(options){
             input.removeAttribute("checked")
         } 
     });
+}
+
+Checkbox.prototype.reset = function(options){
+    this.inputs.forEach( input => { 
+        input.checked = false;
+        input.removeAttribute("checked")
+    })
+    this.value = []
+    this.names = []
+    
+    options.inputValues[this.name] = this.names;
+    
+    options.url.reset(this.url_name)
 }

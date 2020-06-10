@@ -47,7 +47,10 @@ Action.prototype.update = function(e){
   
               if( isTarget(e, search)|| e.target === this.el.form.targetEl ){
                 search.update(this)
+                search.state(true)
                 if(this.el.url) this.el.url.construct( search )
+              }else{
+                search.state(false)
               }
             }) 
           }

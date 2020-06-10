@@ -79,6 +79,7 @@ Filter.prototype.construct = function(params){
     ;
     
     this.form.targetEl = this.form.target ? document.querySelector(this.form.target) : ''
+
     return this;
 
 } 
@@ -87,11 +88,6 @@ Filter.prototype.getValues = function(){
 }
 Filter.prototype.setInputs = function( inputs ) {
 
-    // --- set inputs --- //
-    // for (const key in inputs) {
-    //     if (inputs[key])      this.get(inputs, key, capitalize(key))
-    // }
-    
     if (inputs.select)      this.get(inputs.select, "select", Select)
     if (inputs.search)      this.get(inputs.search, "search", Search)
     if (inputs.checkbox)    this.get(inputs.checkbox, "checkbox", Checkbox)
@@ -134,20 +130,9 @@ Filter.prototype.get = function(array, val, fct ) {
        
         const els = el.url_name ? el.url_name : el.name;
 
-        
-        if(this.url && location.hash && this.url.params[els] ){
-            if( this.url.params[els].indexOf(',') ) this.url.params[els] = this.url.params[els].split(',');
-            if (el.id === true) {
-
-                el.value = this.url.params[els].map( input => document.querySelector(`#${input}`).value )
-
-            }
-            else{
-                el.value = this.url.params[els];
-            }
-
-        }
-
+        // Update all inputs if url contains parameters
+        this.urlByInput(el, els)
+   
         if(val === "range") this.inputs[val].push( setArrayRange( obj, el, this.formObj ) )
         else this.inputs[val].push( setArray( obj, el ) )
 
@@ -157,3 +142,30 @@ Filter.prototype.get = function(array, val, fct ) {
         
     })
 }
+
+Filter.prototype.urlByInput = function(el, els){
+    if(this.url && location.search && this.url.params[els] ){
+        console.log(this.url.params);
+        
+        if( this.url.params[els].indexOf(',') > -1 ) this.url.params[els] = this.url.params[els].split(',');
+        if (el.id === true) {
+
+            el.value = this.url.params[els].map( input => document.querySelector(`#${input}`).value )
+
+        }
+        else{
+            el.value = this.url.params[els];
+        }
+
+    }
+}
+
+Filter.prototype.reset = function() {
+    if (this.inputs.select)      this.inputs.select.forEach(el => el.reset(this) )
+    if (this.inputs.search)      this.inputs.search.forEach(el => el.reset(this) )
+    if (this.inputs.checkbox)    this.inputs.checkbox.forEach(el => el.reset(this) )
+    if (this.inputs.radio)       this.inputs.radio.forEach(el => el.reset(this) )
+    if (this.inputs.range)       this.inputs.range.forEach(el => el.reset(this) )
+    // if(this.url) this.url.reset(this);
+}
+

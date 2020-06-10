@@ -12,7 +12,24 @@ function Select(){
     this.id      = true
 }
 
+Select.prototype.set = function(options){
+    this.input = options.formObj.querySelector(`[name="${this.name}"]`);
+    this.inputs = this.input.querySelectorAll(`option`)
 
+    options.formObj.addEventListener('click', (event)  => { 
+    const newEvent = new CustomEvent(
+            'update', 
+            {detail: event}
+        )
+        document.dispatchEvent(newEvent)
+    })
+    this.resetEvent = function () {
+        var event = new CustomEvent('reset');
+        this.input.dispatchEvent(event);
+    };
+
+    return this;
+}
 Select.prototype.validate = function(data){
     if (this.value.length === 0 || this.value.length === 1 && this.value[0] === "") return true;
 
@@ -35,10 +52,9 @@ Select.prototype.validate = function(data){
 
 Select.prototype.update = function(options){
     // Get all inputs from this name
-    const inputs = options.el.formObj.querySelectorAll(`[name="${this.name}"] option`)
     // Return the checked inputs
 
-    const checked = [...inputs].filter( input => input.selected );
+    const checked = [...this.inputs].filter( input => input.selected );
 
     // Insert value in instance
     this.value = [...checked].map( input => input.value )
@@ -49,11 +65,9 @@ Select.prototype.update = function(options){
 
 Select.prototype.create = function(options){
     
-    const select = options.formObj.querySelector(`[name="${this.name}"]`);
-
-    const inputs = options.formObj.querySelectorAll(`[name="${this.name}"] option`)
     
-    const checked = [...inputs].filter( input => {
+    
+    const checked = [...this.inputs].filter( input => {
         const attr = this.id === true && input.getAttribute('id') ? input.getAttribute('id') : input.value;
         if (this.value.indexOf(attr) > -1) {
             input.setAttribute('selected', 'selected')
@@ -63,9 +77,36 @@ Select.prototype.create = function(options){
     this.value = [...checked].map( input => input.value )
     this.names = [...checked].map( input => input.getAttribute('id') ? input.getAttribute('id') : input.value );
 
-    select.selectedOptions = checked
+    this.input.selectedOptions = checked
     
     
-    select.setAttribute('value', this.value.join('&'))
+    this.input.setAttribute('value', this.value.join('&'))
 
+}
+
+Select.prototype.reset = function(options){
+    this.value = []
+    this.names = []
+    
+    
+    this.input.setAttribute('value','')
+    this.input.value = ''
+
+    this.inputs.forEach( input => { 
+        input.selected = false
+        input.removeAttribute('selected')
+        input.removeAttribute('aria-selected')
+    } );
+
+    if(this.multiple){
+        this.input.selectedOptions = []
+        this.input.selected = []
+    }else{
+        this.input.selectedIndex = 0
+        this.input.selected = [this.inputs[0]]
+    }
+    
+    this.resetEvent()
+    options.inputValues[this.name] = [];
+    options.url.reset(this.url_name)
 }

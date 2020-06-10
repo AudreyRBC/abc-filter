@@ -14,7 +14,7 @@ var Filter = module.exports = {
         abc.formObj = document.querySelector(params.form.container);
 
         if( params.inputs ) abc.setInputs(params.inputs)
-
+       
         abc.alldatas = new Datas();
         abc.alldatas.get( abc ) ;
     
@@ -22,6 +22,8 @@ var Filter = module.exports = {
         if(abc.load_more) Promise.all([abc.alldatas.get]).then( () => abc.load_more.init(abc)); 
         if(abc.facette) Promise.all([abc.alldatas.get]).then( () => abc.facette.init(abc)); 
         
+       
+
         return abc
     }
 }

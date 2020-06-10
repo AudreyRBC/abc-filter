@@ -36,29 +36,52 @@ Range.prototype.validate = function (data){
         return isMin && isMax
     }
 }
+Range.prototype.customEvent = function(target) {
+    target.addEventListener('input', (event)  => { 
+        const newEvent = new CustomEvent(
+            'update', 
+            {detail: event}
+        )
+        document.dispatchEvent(newEvent)
+    })
+}
+Range.prototype.set = function(options){
+    if(!this.multiple)  this.inputMin = this.name ? options.formObj.querySelector(`[name="${this.name}"]`) : options.el.formObj.querySelector(`[name="${this.min.name}"]`)
+    else{
+        this.inputMin = options.formObj.querySelector(`[name="${this.min.name}"]`)
+        this.inputMax = options.formObj.querySelector(`[name="${this.max.name}"]`)
 
+    }
 
+    this.resetEvent = function () {
+        var event = new CustomEvent('reset');
+        this.inputMin.dispatchEvent(event);
+    };
+    this.customEvent(this.inputMin)
+    if(this.inputMin) this.customEvent(this.inputMax)
+    
+    return this
+}
 
 Range.prototype.update = function(options){
     let isValidated;
 
     if(!this.multiple){
-        const input = this.name ? options.el.formObj.querySelector(`[name="${this.name}"]`) : options.el.formObj.querySelector(`[name="${this.min.name}"]`)
-        isValidated = this.updateMin( input );
+       
+        this.updateMin( this.inputMin );
         options.el.inputValues[this.min.name ? this.min.name : this.name] = this.min.value;
         
     }
 
     if(this.multiple) {
-        const inputMin = options.el.formObj.querySelector(`[name="${this.min.name}"]`)
-        const inputMax = options.el.formObj.querySelector(`[name="${this.max.name}"]`)
-
-        this.updateMin( inputMin );
-        this.updateMax( inputMax );
+        
+        this.updateMin( this.inputMin );
+        this.updateMax( this.inputMax );
         options.el.inputValues[this.min.name] = this.min.value;
         options.el.inputValues[this.max.name] = this.max.value;
     }
 
+    
     
 }
 
@@ -86,18 +109,37 @@ Range.prototype.create = function(options, values){
     
     values = values[0].split('-');
     
-    const inputMin = this.name ? options.formObj.querySelector(`[name="${this.name}"]`) : options.formObj.querySelector(`[name="${this.min.name}"]`)
+    // this.inputMin = this.name ? options.formObj.querySelector(`[name="${this.name}"]`) : options.formObj.querySelector(`[name="${this.min.name}"]`)
        
-    inputMin.setAttribute('value', values[0])
+    this.inputMin.setAttribute('value', values[0])
     this.min.value = values[0]
-    this.min.min = inputMin.getAttribute('min')
-    inputMin.value = values[0]
+    this.min.min = this.inputMin.getAttribute('min')
+    this.inputMin.value = values[0]
 
     if(values[1]){
-        const inputMax = options.formObj.querySelector(`[name="${this.max.name}"]`)
-        inputMax.setAttribute('value', values[1])
-        this.max.max = inputMin.getAttribute('max')
+        // const inputMax = options.formObj.querySelector(`[name="${this.max.name}"]`)
+        this.inputMax.setAttribute('value', values[1])
+        this.max.max = this.inputMin.getAttribute('max')
         this.max.value = values[1]
-        inputMax.value = values[1]
+        this.inputMax.value = values[1]
     }
+}
+
+Range.prototype.reset = function(options){
+    this.min.value = this.min.min
+    this.max.value = this.max.max
+    this.inputMin.value = this.min.min
+    this.inputMax.value = this.max.max
+    this.inputMin.setAttribute('value', this.min.min)
+    this.inputMax.setAttribute('value', this.max.max)
+
+    this.updateMin( this.inputMin );
+    this.updateMax( this.inputMax );
+    options.inputValues[this.min.name] = this.min.value;
+    options.inputValues[this.max.name] = this.max.value;
+    
+    // this.inputMin.updateInput();
+    this.resetEvent()
+    options.inputValues[this.name] = this.names;
+    options.url.reset(this.url_name)
 }
