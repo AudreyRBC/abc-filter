@@ -1,5 +1,6 @@
 var { inArray }  = require ('../../Helpers/Array' );
 
+
 module.exports = () => { return new Range() }
 
 function Range(){
@@ -28,15 +29,15 @@ Range.prototype.validate = function (data){
     data.inputs = []
     if(!this.multiple) return this.validateMin( data );
 
-    if(this.multiple) {
+    if(this.multiple ) {
         const isMin = this.validateMin( data );
         const isMax = this.validateMax( data );
        
-        
         return isMin && isMax
     }
 }
 Range.prototype.customEvent = function(target) {
+    if(!target) return;
     target.addEventListener('input', (event)  => { 
         const newEvent = new CustomEvent(
             'update', 

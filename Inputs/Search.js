@@ -73,9 +73,7 @@ Search.prototype.set = function(options){
     
     return this
 }
-Search.prototype.setValues = function(){
-    console.log(this.input.value);
-    
+Search.prototype.setValues = function(){    
     this.input.setAttribute('value', this.input.value)
     // Insert value in instance
     this.value = this.input.value

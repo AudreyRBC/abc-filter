@@ -88,7 +88,6 @@ Datas.prototype.HTML = function(el){
 
   const datas = document.querySelectorAll(el.results.target);
   this.results = el.results
-  console.log(datas);
   
   this.datas = datas.map( d => {
 

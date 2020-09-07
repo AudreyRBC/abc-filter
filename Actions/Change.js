@@ -21,7 +21,7 @@ onChange.prototype.bindEvent = function(){
     e = e.detail
     
     this.action.update(e);
-    if(this.el.url)  window.history.pushState( '', '', location.origin+"?"+this.el.url.search.toString() ); 
+    if(this.el.url)  window.history.pushState( '', '', location.origin + location.pathname +"?"+this.el.url.search.toString() ); 
     this.action.do( )
     // this.el.facette.update(this.el)
   })

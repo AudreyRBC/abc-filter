@@ -145,7 +145,6 @@ Filter.prototype.get = function(array, val, fct ) {
 
 Filter.prototype.urlByInput = function(el, els){
     if(this.url && location.search && this.url.params[els] ){
-        console.log(this.url.params);
         
         if( this.url.params[els].indexOf(',') > -1 ) this.url.params[els] = this.url.params[els].split(',');
         if (el.id === true) {
